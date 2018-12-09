@@ -1,24 +1,27 @@
 package com.cn.haowei.controller;
 
-import com.cn.haowei.entity.PostsEntity;
+import com.cn.haowei.BaseController;
 import com.cn.haowei.repository.PostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @SuppressWarnings("unused")
-public class MainController {
+public class MainController extends BaseController {
 
     @Autowired
-    private PostsRepository postsRepository;
+    PostsRepository postsRepository;
 
     @RequestMapping(value = "/")
-    public List<PostsEntity> index() {
-        //System.out.println("test");
-        return postsRepository.findAll();
-        //return "hello spring";
+    public Response index(HttpServletRequest request) {
+        Map<String, Object> result = postsRepository.getSimple(Long.valueOf(request.getParameter("id")));
+        if (result.size() == 0) return end(400, "数据为空");
+        return end(0, "", result);
     }
+
+
 }
