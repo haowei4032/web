@@ -1,5 +1,7 @@
 package com.cn.haowei;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -16,6 +18,20 @@ public abstract class BaseController {
                 .setError(error)
                 .setMessage(message)
                 .setResult(result);
+    }
+
+    protected Response end(int error, String message, List<Map<String, Object>> result) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("list", result);
+        resultMap.put("total", result.size());
+        resultMap.put("page", 1);
+        resultMap.put("pageSize", 10);
+
+        return new ResponseForResult()
+                .setError(error)
+                .setMessage(message)
+                .setResult(resultMap);
     }
 
     protected class Response {
